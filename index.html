@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+	<head>
+		<script type='text/javascript' src='https://migi.me/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+		<script type='text/javascript' src='https://migi.me/wp-content/themes/migi/js/functions.js?ver=1564498555'></script>
+		<title>出席</title>
+	</head>
+
+	<body>
+		<div>
+	    	<p>何時に帰りますか？</p>
+			<select id="select_time">
+				<option value="14:00">14:00</option>
+				<option value="14:30">14:30</option>
+				<option value="15:00">15:00</option>
+				<option value="15:30">15:30</option>
+				<option value="16:00">16:00</option>
+			</select>
+		</div>
+
+		<div>
+			<p>体調どうですか？</p>
+			<select id="select_status">
+				<option value="20">20%</option>
+				<option value="40">40%</option>
+				<option value="60">60%</option>
+				<option value="80">80%</option>
+				<option value="100">100%</option>
+			</select>
+		</div>
+
+	    <p id="text_copy" style="display:none;"></p>
+		<button class="copy_code" style="margin-top: 20px;">COPY</button>
+
+    	<!-- bodyタグ内の下部に以下を入力する -->
+    	<script> 
+			jQuery(function($) {
+				//ボタンがクリックされた時の処理
+			    $('.copy_code').click(function() {
+
+			    	//現在時刻の取得
+			    	var now = new Date();
+					var h = now.getHours();
+					var m = now.getMinutes();
+					var o;
+				if(m > 0 && m < 14){
+					o = "00"}
+				else if(m > 15 && m < 29){
+					o = "15"}
+				else if(m > 30 && m < 44){
+					o = "30"}
+				else{
+					o = "45"}
+					var start_time = h + ":" + o ;
+					
+	   	    		//セレクトボックスで選択したvalue値を変数に格納
+ 				　  var end_time = $('#select_time').val();
+ 				　  var tension = $('#select_status').val();
+
+ 					//最終的に欲しいテキスト生成
+ 					var finish_text = "<氏名>大谷　祐樹\n" + "<利用時間>" + start_time + "～" + end_time + "\n<本日の予定>LL\n本日もよろしくお願いします。" + tension + "%" ;
+
+ 					//pタグ(id=text_copy)内にぶち込む
+					text_copy.innerHTML = finish_text ;
+
+				    //コピー処理
+			        var clipboard = $('<textarea></textarea>');
+			        clipboard.addClass('clipboard');
+			        clipboard.html( $(this).prev('#text_copy').html() );
+			        $(this).append(clipboard);
+			        clipboard.select();
+			        document.execCommand('copy');
+			        clipboard.remove();
+			     	alert("コピー完了！");
+			      	
+			    });
+			});
+     	</script>
+
+	</body>
+</html>
